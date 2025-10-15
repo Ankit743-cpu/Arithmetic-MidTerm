@@ -1,36 +1,27 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package arithmetic;
 
-
 import java.util.Scanner;
-import static java.time.Clock.system;
 
-/** This class calls the method to perform 
- * arithmetic operations based on user input
- * execute the code check the output
- * @author sivagamasrinivasan
- * 
- */
-public class Arithmetic 
-{
+public class Arithmetic {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) 
-    {
-       
-        ArithmeticBase r= new ArithmeticBase();
-        Scanner in= new Scanner(System.in);
-        int n= in.nextInt();
-        int m= in.nextInt();
-        double result = r.calculate(m,n);
-        System.out.println("result :" +result); 
-    
+        System.out.print("Enter first number: ");
+        double num1 = sc.nextDouble();
+
+        System.out.print("Enter second number: ");
+        double num2 = sc.nextDouble();
+
+        System.out.println("\nResults:");
+        for (Operation op : Operation.values()) {
+            try {
+                double result = op.apply(num1, num2);
+                System.out.println(op.name() + " of " + num1 + " and " + num2 + " = " + result);
+            } catch (ArithmeticException e) {
+                System.out.println(op.name() + ": " + e.getMessage());
+            }
+        }
+
+        sc.close();
     }
 }
-

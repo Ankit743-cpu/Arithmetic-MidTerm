@@ -1,39 +1,57 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package arithmetic;
 
 import java.util.Scanner;
 
-/** This class takes String input plus,minus,divide and times
- * from user and execute the arithmetic operation
- * change the code to use enum instead String and mention the advantage of enum.
- * @author sivagamasrinivasan
- * 
- */
-public class ArithmeticBase 
-{
- public double x,y;
-    double calculate(double x, double y) 
-        {
-        Scanner sc =new Scanner(System.in);
-        System.out.println("Enter arithmetic operation to Perform: ");
-        String s= sc.next();
-        switch (s.toUpperCase()) 
-        {
-            case "PLUS":
-                return x + y;
-            case "MINUS":
-                return x - y;
-            case "TIMES":
-                return x * y;
-            case "DIVIDE":
-                return x / y;
-            default:
-                throw new AssertionError("Unknown operations " + this);
+enum Operation {
+    PLUS {
+        @Override
+        public double apply(double a, double b) {
+            return a + b;
         }
+    },
+    MINUS {
+        @Override
+        public double apply(double a, double b) {
+            return a - b;
+        }
+    },
+    TIMES {
+        @Override
+        public double apply(double a, double b) {
+            return a * b;
+        }
+    },
+    DIVIDE {
+        @Override
+        public double apply(double a, double b) {
+            if (b == 0) throw new ArithmeticException("Division by zero");
+            return a / b;
+        }
+    };
+
+    public abstract double apply(double a, double b);
+}
+
+public class ArithmeticBase {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter first number: ");
+        double x = sc.nextDouble();
+
+        System.out.print("Enter second number: ");
+        double y = sc.nextDouble();
+
+        System.out.println("\nResults:");
+        for (Operation op : Operation.values()) {
+            try {
+                double result = op.apply(x, y);
+                System.out.println(op.name() + " of " + x + " and " + y + " = " + result);
+            } catch (ArithmeticException e) {
+                System.out.println(op.name() + ": " + e.getMessage());
+            }
+        }
+
+        sc.close();
     }
-   
 }
